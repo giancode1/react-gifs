@@ -1,17 +1,27 @@
-import { useState } from "react"
+//Custom Hook
 
-export const useFetchGifs = () => {
+import { useState, useEffect } from "react"
+import {getGifs} from '../components/helpers/getGifs';
+
+export const useFetchGifs = (category) => {
     const [state, setState] = useState({
         data: [],
         loading: true,
     })
-    setTimeout(()=>{
-        setState({
-            data: [1,2,3,4,5],
-            loading: false,
-        })
-    },1000)
-    return state // {data:[], loadinf: true}
+
+    useEffect(() => { 
+        getGifs(category)
+            .then( imgs => {
+                // setTimeout(() => {
+                    setState({
+                        data: imgs,
+                        loading: false
+                    })
+                // }, 1000);
+            })
+    }, [category] )
+
+    return state // {data:[], loading: true}
 }
 
 
